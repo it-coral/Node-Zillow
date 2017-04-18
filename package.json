@@ -9,13 +9,16 @@
     "syntax": "standard | snazzy"
   },
   "dependencies": {
-    "moment": "^2.14.1",
+    "edgeapi": "git+ssh://git@gitlab.protovate.com:Edge/EdgeApi.git",
+    "edgecommonconfig": "git+ssh://git@gitlab.protovate.com:Edge/EdgeCommonConfig.git",
+    "moment": "^2.18.1",
+    "newpromise": "git+ssh://git@gitlab.protovate.com:Edge/newPromise",
     "request": "^2.74.0",
     "rx": "^4.1.0",
     "tty-table": "^2.1.0"
   },
-  "repository":{
-    "url" : "git@gitlab.protovate.com:LookingGlass/Tool-ImportCrime.git"
+  "repository": {
+    "url": "git@gitlab.protovate.com:LookingGlass/Tool-ImportCrime.git"
   },
   "devDependencies": {
     "ava": "^0.15.2",
