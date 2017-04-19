@@ -38,7 +38,6 @@ processOutput = (output)->
 
     EdgeApi.doGetApi()
     .then (api)->
-
         reBad      = new RegExp "-", "g"
         all        = []
         crimeStats = {}
@@ -177,7 +176,8 @@ try
 
         jobExec = spawn "node", args,
             cwd: path
-            env: envCopy
+            shell: true
+            # env: envCopy
 
         jobExec.stdout.on "data", (data)=>
             if data? then fullOutput += data.toString()

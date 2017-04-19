@@ -22,8 +22,8 @@ let commonPostHeaders = { 'Content-Type': 'application/x-www-form-urlencoded; ch
 let writeFile = Rx.Observable.fromNodeCallback(fs.writeFile)
 
 let parseStartupPoint = body => {
+  
   let result = /sv": {([^}]*)}/.exec(body)
-
   if (!result || !result[1]) throw new Error('Something went wrong when detecting startup coordinates')
 
   return JSON.parse(`{${result[1]}}`)
@@ -47,8 +47,7 @@ let getVariousStartupRings = agencyId => Rx.Observable
   .map(body => parseStartupPoint(body))
   .flatMap(startupPoint => Rx.Observable
     .from(ZOOM_PARAMS)
-    .map(offset => generateRings(startupPoint, offset, offset))
-  )
+    .map(offset => generateRings(startupPoint, offset, offset)))
 
 /**
  * Here we have an object {reports: [], rings: ''}
@@ -59,7 +58,7 @@ let extendReportsWithGeo = (params, data) => Rx.Observable
   .do(console.log(`Extending reports for agency id #${params.agencyId} with coordinates..`))
   .flatMap(() => createRequestObservable({
     method: 'POST',
-    url: 'http://www.crimemapping.com/map/MapUpdated',
+    url: 'https://www.crimemapping.com/map/MapUpdated',
     body: fixedEncodeURIComponent(`filterdata={"SelectedCategories":[${selectedCategoriesString}],"SpatialFilter":{"FilterType":2,"Filter":"{\\"rings\\":${data.rings},\\"spatialReference\\":{\\"wkid\\":102100}}"},"TemporalFilter":{"FilterType":"Previous","ExplicitStartDate":"${params.startDate}","ExplicitEndDate":"${params.endDate}"},"AgencyFilter":[${params.agencyId}]}`),
     headers: commonPostHeaders
   }))
@@ -83,8 +82,7 @@ let getReports = (params, rings) => Rx.Observable
   .just(1)
   .flatMap(url => createRequestObservable({
     method: 'POST',
-    url: 'http://www.crimemapping.com/Map/CrimeIncidents_Read',
-    body: fixedEncodeURIComponent(`paramFilt={"SelectedCategories":[${selectedCategoriesString}],"SpatialFilter":{"FilterType":2,"Filter":"{\\"rings\\":${rings},\\"spatialReference\\":{\\"wkid\\":102100}}"},"TemporalFilter":{"FilterType":"Previous","ExplicitStartDate":"${params.startDate}","ExplicitEndDate":"${params.endDate}"},"AgencyFilter":[${params.agencyId}]}&unmappableOrgIDs=System.Collections.Generic.List\`1[System.Int32]`),
+    url: 'https://www.crimemapping.com/Map/CrimeIncidents_Read?' + fixedEncodeURIComponent(`paramFilt={"SelectedCategories":[${selectedCategoriesString}],"SpatialFilter":{"FilterType":2,"Filter":"{\\"rings\\":${rings},\\"spatialReference\\":{\\"wkid\\":102100}}"},"TemporalFilter":{"FilterType":"Previous","ExplicitStartDate":"${params.startDate}","ExplicitEndDate":"${params.endDate}"},"AgencyFilter":[${params.agencyId}]}&unmappableOrgIDs=System.Collections.Generic.List\`1[System.Int32]`),    
     headers: commonPostHeaders
   }))
   .map(JSON.parse)
@@ -141,6 +139,7 @@ let dumpAgencyReports = params => Rx.Observable
 let start = () => {
   let possibleDates = []
   let agenciesToBeDumped = process.argv.splice(2)
+
 
   agenciesToBeDumped = agenciesToBeDumped.map(a => {
     if (parseInt(a) > 20000000) {
