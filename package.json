@@ -15,6 +15,7 @@
     "newpromise": "git+ssh://git@gitlab.protovate.com:Edge/newPromise",
     "request": "^2.74.0",
     "rx": "^4.1.0",
+    "shell-quote": "^1.6.1",
     "tty-table": "^2.1.0"
   },
   "repository": {

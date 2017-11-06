@@ -23,7 +23,7 @@ npm  = "git+ssh://#{repo}"
 ##|  Auto determine NPM FOlder
 folder = "node_modules/#{pkg.name}"
 
-all  = ["NorthCarolina", "SouthCarolina", "Florida1", "Florida2", "Florida3", "Florida4", "Texas", "Georgia"]
+all  = ["NorthCarolina", "SouthCarolina", "Florida1", "Florida2", "Florida3", "Florida4", "Texas", "Georgia", "Kentucky", "Ohio"]
 
 for loc in all
 
